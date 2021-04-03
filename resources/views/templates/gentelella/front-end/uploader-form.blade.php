@@ -94,6 +94,9 @@
         complete: function(xhr) {
             jsonData=JSON.parse(xhr.responseText);
 
+            console.log(jsonData);
+
+
             if(!jsonData.status)
             {
                 showError(jsonData);

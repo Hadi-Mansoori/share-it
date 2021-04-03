@@ -113,6 +113,8 @@ class User extends Controller
     {
         $request=\Request::all();
 
+
+
         if(!empty($request)) {
             $validator = \Validator::make($request,
                 [
@@ -171,6 +173,17 @@ class User extends Controller
                         'code' => $errorCode,
                     ]);
                 }
+
+                if($errorCode==1364)
+                {
+                    return response()->json([
+                        'status' => false,
+                        'data' => ['error'=>$e->getMessage()],
+                        'code' => $errorCode,
+                    ]);
+                }
+
+
             }
         }
     }

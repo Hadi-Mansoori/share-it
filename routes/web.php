@@ -21,12 +21,12 @@ Route::group(['middleware' => ['web'],'prefix' => 'user'], function()
     Route::post('/register', [User::class, 'register']);
 });
 
-Route::group(['middleware' => ['web','user-auth'],'prefix' => 'admin'], function()
+Route::group(['middleware' => ['web','auth'],'prefix' => 'admin'], function()
 {
     Route::get('/panel', [Admin::class,'panel']);
 });
 
-Route::group(['middleware' => ['web','user-auth'],'prefix' => 'file'], function()
+Route::group(['middleware' => ['auth'],'prefix' => 'file'], function()
 {
     Route::get('/uploader', [Files::class,'uploader']);
     Route::post('/uploader', [Files::class,'uploader']);
@@ -35,5 +35,12 @@ Route::group(['middleware' => ['web','user-auth'],'prefix' => 'file'], function(
 });
 
 Route::get('/{shortLink}', [Files::class, 'downloadPage']);
+
+//Route::get('/login', [User::class, 'login','as'=>'login']);
+
 Route::get('/file/download/{shortLink}', [Files::class, 'download']);
-Route::get('/', [User::class, 'login']);
+
+Route::get('/', ['as'=>'login',User::class, 'login']);
+Route::get('/login', ['as'=>'login',User::class, 'login']);
+
+Route::post('login', [ 'as' => 'login', 'uses' => 'User@login']);

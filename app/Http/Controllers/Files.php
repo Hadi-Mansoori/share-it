@@ -70,6 +70,7 @@ class Files extends Controller
             ];
 
             try{
+
                 $fileRecord=File::create($fileDetails);
                 $fileDetails['unique_code'].=$fileRecord->id;
                 File::where('id',$fileRecord->id)->update($fileDetails);
@@ -85,16 +86,18 @@ class Files extends Controller
             }catch (\Exception $e)
             {
                 $errorCode = $e->errorInfo[1];
+
                 return response()->json([
                     'status' => false,
-                    'data' =>  $e->getMessage(),
+                    'data' =>  [$e->getMessage()],
                     'code' => $errorCode,
                 ]);
+
             }
 
         }else{
             $view=view($this->template.'front-end/uploader-form')->render();
-            return loadView($this->template,['view'=>$view]);
+            return view($this->template.'back-end/dashboard',['view'=>$view]);
         }
     }
 
@@ -112,7 +115,7 @@ class Files extends Controller
     {
         $files=File::where('user_id',Auth::user()->id)->get();
         $view=view($this->template.'front-end/my-files',['myFiles'=>$files])->render();
-        return loadView($this->template,['view'=>$view]);
+        return view($this->template.'back-end/dashboard',['view'=>$view]);
     }
 
     /**
@@ -168,10 +171,11 @@ class Files extends Controller
      */
     public function downloadPage($uniqueCode)
     {
+        if($uniqueCode=='login') return redirect('user/login');
         try{
             $file=File::where('unique_code',$uniqueCode)->first();
             $view=view($this->template.'front-end/download-page',['file'=>$file])->render();
-            return loadView($this->template,['view'=>$view]);
+            return view($this->template.'back-end/dashboard',['view'=>$view]);
 
         }catch (\Exception $e)
         {

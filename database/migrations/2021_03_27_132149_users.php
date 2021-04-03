@@ -14,24 +14,22 @@ class Users extends Migration
      */
     public function up()
     {
-        DB::statement("
-                      CREATE TABLE IF NOT EXISTS `share-it`.`users` (
-                          `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-                          `created_at` TIMESTAMP NULL DEFAULT NULL,
-                          `updated_at` TIMESTAMP NULL DEFAULT NULL,
-                          `name` VARCHAR(255) NULL DEFAULT NULL,
-                          `password` VARCHAR(65) NULL DEFAULT NULL,
-                          `email` VARCHAR(255) NULL DEFAULT NULL,
-                          `first_name` VARCHAR(45) NULL DEFAULT NULL,
-                          `last_name` VARCHAR(45) NULL DEFAULT NULL,
-                          `remember_token` VARCHAR(255) NULL DEFAULT NULL,
-                          PRIMARY KEY (`id`),
-                          UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
-                          UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-                        ENGINE = InnoDB
-                        DEFAULT CHARACTER SET = utf8
-                        COLLATE = utf8_unicode_ci"
-        );
+
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->string('name',45)->unique();
+            $table->string('email',45)->unique();
+            $table->string('password',67);
+            $table->string('first_name',100);
+            $table->string('last_name',100);
+            $table->string('remember_token',67)->nullable();
+
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+        });
     }
 
     /**

@@ -14,31 +14,26 @@ class Files extends Migration
      */
     public function up()
     {
-        DB::statement("
-            CREATE TABLE IF NOT EXISTS `files` (
-              `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-              `user_id` BIGINT(20) NOT NULL,
-              `created_at` TIMESTAMP NULL DEFAULT NULL,
-              `updated_at` TIMESTAMP  NULL DEFAULT NULL,
-              `name` VARCHAR(255) COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-              `standard_name` VARCHAR(255) COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-              `size` DOUBLE  NULL DEFAULT NULL,
-              `type` VARCHAR(45) COLLATE utf8_unicode_ci  NULL DEFAULT NULL,
-              `path` VARCHAR(500) COLLATE utf8_unicode_ci  NULL DEFAULT NULL ,
-              `unique_code` VARCHAR(45) COLLATE utf8_unicode_ci  NULL DEFAULT NULL ,
-              `download_count` BIGINT(20)  NULL DEFAULT NULL ,
-              PRIMARY KEY (`id`, `user_id`),
-              INDEX `fk_files_users_idx` (`user_id` ASC) ,
-              CONSTRAINT `fk_files_users`
-                FOREIGN KEY (`user_id`)
-                REFERENCES `users` (`id`)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE)
-            ENGINE = InnoDB
-            DEFAULT CHARACTER SET = utf8
-            COLLATE = utf8_unicode_ci
-        "
-        );
+
+        Schema::create('files', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->bigInteger('user_id')->unsigned();
+            $table->string('name',100);
+            $table->string('type',45);
+            $table->string('standard_name',255);
+            $table->string('path',500);
+            $table->string('unique_code',100);
+            $table->bigInteger('download_count')->default(0);
+            $table->float('size',0);
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+        });
     }
 
     /**

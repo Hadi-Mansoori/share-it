@@ -30,6 +30,6 @@ class Admin extends Controller
     public function panel()
     {
         $view=view($this->template.'back-end/dashboard-content')->render();
-        return loadView($this->template,['view'=>$view]);
+        return view($this->template.'back-end/dashboard',['view'=>$view]);
     }
 }

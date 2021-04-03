@@ -7,8 +7,9 @@
     <div class="profile_info">
         <span>Welcome,</span>
         <h2>
-
-            {{getUserFullName()['first_name']}} {{getUserFullName()['last_name']}}
+            @if(isset(Auth::user()->id))
+                {{Auth::user()->first_name}}  {{Auth::user()->last_name}}
+            @endif
 
         </h2>
     </div>

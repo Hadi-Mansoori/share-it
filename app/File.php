@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
     protected $fillable = [
-        'name', 'size', 'type','path','download_count','user_id','standard_name'
+        'name', 'size', 'type','path','download_count','user_id','standard_name','unique_code'
     ];
 
     /*protected $guarded = array('id', 'random_column');
